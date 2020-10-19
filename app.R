@@ -1,4 +1,4 @@
-library(shiny)
+ library(shiny)
 library(shinydashboard)
 library(shinythemes)
 library(shinyWidgets) 
@@ -14,7 +14,13 @@ library(tidyverse)
 library(dplyr)
 library(data.table)
 library(gridExtra)
+library(shinycssloaders)
 
+# função para indicar que os gráficos estão carregando
+loader <- function(x) {
+    withSpinner(x,type = getOption("spinner.type", default = 6), color = "#FF7C4B")
+    
+}
 
 
 ui <- dashboardPage(
@@ -132,7 +138,7 @@ ui <- dashboardPage(
                                                                                             ),
                                                                                             
                                                                                             mainPanel(title = "", width = 8, 
-                                                                                                      highchartOutput('mapa')
+                                                                                                      loader(highchartOutput('mapa'))
                                                                                             )
                                                                                         )
                                                                                  ),
@@ -175,7 +181,7 @@ ui <- dashboardPage(
                                                                                          
                                                                                          mainPanel(title = "", width = 9, 
                                                                                                    solidHeader = T, status = "warning",
-                                                                                                   highchartOutput('lines')
+                                                                                                   loader(highchartOutput('lines'))
                                                                                          )
                                                                                      )
                                                                                  )
@@ -214,7 +220,7 @@ ui <- dashboardPage(
                                                                                          ),
                                                                                          
                                                                                          mainPanel(title = "", width = 9, 
-                                                                                                   highchartOutput('polar',height = '450px')
+                                                                                                   loader(highchartOutput('polar',height = '450px'))
                                                                                          )
                                                                                      )
                                                                                  )
@@ -258,10 +264,10 @@ ui <- dashboardPage(
                                                                                          mainPanel(title = "", width = 9, 
                                                                                                    fluidRow(
                                                                                                        column(6,
-                                                                                                              highchartOutput('tri',height = '400px',width='415px')
+                                                                                                              loader(highchartOutput('tri',height = '400px',width='415px'))
                                                                                                        ),
                                                                                                        column(6,
-                                                                                                              highchartOutput('mapa_tri',height = '400px')
+                                                                                                              loader(highchartOutput('mapa_tri',height = '400px'))
                                                                                                        )
                                                                                                    )
                                                                                          )
@@ -312,7 +318,7 @@ ui <- dashboardPage(
                                                                                                                                        )
                                                                                                                                 ),
                                                                                                                                 column(12,
-                                                                                                                                       plotlyOutput('histidades')
+                                                                                                                                       loader(plotlyOutput('histidades'))
                                                                                                                                 )
                                                                                                                                 
                                                                                                                             )
@@ -346,7 +352,7 @@ ui <- dashboardPage(
                                                                                                                                        )
                                                                                                                                 ),
                                                                                                                                 column(12,
-                                                                                                                                       plotlyOutput('histidades2')
+                                                                                                                                       loader(plotlyOutput('histidades2'))
                                                                                                                                 )
                                                                                                                                 
                                                                                                                             )
@@ -385,7 +391,7 @@ ui <- dashboardPage(
                                                                                                                                        )
                                                                                                                                 ),
                                                                                                                                 column(12,
-                                                                                                                                       highchartOutput('pizzaraca', height="300px")
+                                                                                                                                       loader(highchartOutput('pizzaraca', height="300px"))
                                                                                                                                 )
                                                                                                                                 
                                                                                                                             )
@@ -419,7 +425,7 @@ ui <- dashboardPage(
                                                                                                                                        )
                                                                                                                                 ),
                                                                                                                                 column(12,
-                                                                                                                                       highchartOutput('pizzaraca2', height="300px")
+                                                                                                                                       loader(highchartOutput('pizzaraca2', height="300px"))
                                                                                                                                 )
                                                                                                                                 
                                                                                                                             )
@@ -458,7 +464,7 @@ ui <- dashboardPage(
                                                                                                                             ),
                                                                                                                             
                                                                                                                             column(12,
-                                                                                                                                   highchartOutput('barra_porcento',height="300px"))
+                                                                                                                                   loader(highchartOutput('barra_porcento')))
                                                                                                                             
                                                                                                                         )
                                                                                                                  ),
@@ -492,7 +498,7 @@ ui <- dashboardPage(
                                                                                                                             ),
                                                                                                                             
                                                                                                                             column(12,
-                                                                                                                                   highchartOutput('barra_porcento_2',height="300px"))
+                                                                                                                                   loader(highchartOutput('barra_porcento_2')))
                                                                                                                             
                                                                                                                         )
                                                                                                                  )
@@ -561,7 +567,7 @@ ui <- dashboardPage(
                                                                                                              ),
                                                                                                              
                                                                                                              mainPanel(title = "", width = 9, solidHeader = T, 
-                                                                                                                       highchartOutput('inscritos')
+                                                                                                                       loader(highchartOutput('inscritos'))
                                                                                                              )
                                                                                                          )
                                                                                                 ),
@@ -580,36 +586,8 @@ ui <- dashboardPage(
                                                                                                                                        "Certificados de Ensino Médio \n(2012 a 2016)"="certificado",
                                                                                                                                        "Treineiros (2014 a 2018)"="treineiro"))#,
                                                                                                                  
-                                                                                                                 # conditionalPanel(
-                                                                                                                 #     condition="input.ano_mapa_inscritos == 2012 || input.ano_mapa_inscritos == 2013 || input.ano_mapa_inscritos == 2014",
-                                                                                                                 #     selectInput('inscritos_mapa',label="Especificação",
-                                                                                                                 #                 choices=c("Ausentes"="ausentes",
-                                                                                                                 #                           "Certificados de Ensino Médio"="certificado"))),
-                                                                                                                 # conditionalPanel(
-                                                                                                                 #     condition="input.ano_mapa_inscritos == 2015",
-                                                                                                                 #     selectInput('inscritos_mapa',label="Especificação",
-                                                                                                                 #                 choices=c("Ausentes"="ausentes",
-                                                                                                                 #                           "Certificados de Ensino Médio"="certificado",
-                                                                                                                 #                           "Treineiros"="treineiro"))),
-                                                                                                                 # conditionalPanel(
-                                                                                                                 #     condition="input.ano_mapa_inscritos == 2016",
-                                                                                                                 #     selectInput('inscritos_mapa',label="Especificação",
-                                                                                                                 #                 choices=c("Ausentes"="ausentes",
-                                                                                                                 #                           "Certificados de Ensino Médio"="certificado",
-                                                                                                                 #                           "Treineiros"="treineiro"))),
-                                                                                                                 # conditionalPanel(
-                                                                                                                 #     condition="input.ano_mapa_inscritos == 2017",
-                                                                                                                 #     selectInput('inscritos_mapa',label="Especificação",
-                                                                                                                 #                 choices=c("Ausentes"="ausentes",
-                                                                                                                 #                           "Treineiros"="treineiro"))),
-                                                                                                                 # conditionalPanel(
-                                                                                                                 #     condition="input.ano_mapa_inscritos == 2018",
-                                                                                                                 #     selectInput('inscritos_mapa',label="Especificação",
-                                                                                                                 #                 choices=c("Ausentes"="ausentes",
-                                                                                                                 #                           "Treineiros"="treineiro")))
-                                                                                                                 
                                                                                                              ),
-                                                                                                             mainPanel(highchartOutput('mapa_inscritos'))
+                                                                                                             mainPanel(loader(highchartOutput('mapa_inscritos')))
                                                                                                          )
                                                                                                 )
                                                                                          )
@@ -648,7 +626,7 @@ ui <- dashboardPage(
                                                                                                              ),
                                                                                                              
                                                                                                              mainPanel(title = "", width = 9, solidHeader = T,
-                                                                                                                       highchartOutput('treemap')
+                                                                                                                       loader(highchartOutput('treemap'))
                                                                                                              )
                                                                                                          )
                                                                                                 ),
@@ -677,7 +655,7 @@ ui <- dashboardPage(
                                                                                                              ),
                                                                                                              
                                                                                                              mainPanel(title = "", width = 9, solidHeader = T, 
-                                                                                                                       highchartOutput('serie_deficiencias')
+                                                                                                                       loader(highchartOutput('serie_deficiencias'))
                                                                                                              )
                                                                                                          )
                                                                                                 )
@@ -734,7 +712,7 @@ ui <- dashboardPage(
                                                                                              ),
                                                                                              
                                                                                              column(5,
-                                                                                                    highchartOutput("exboxplot")
+                                                                                                    loader(highchartOutput("exboxplot"))
                                                                                              )
                                                                                          )
                                                                                      )
@@ -757,7 +735,7 @@ ui <- dashboardPage(
                                                                                              
                                                                                              column(6,
                                                                                                     #column(width=6,highchartOutput("ex_barra")),
-                                                                                                    highchartOutput("ex_porcento"))
+                                                                                                    loader(highchartOutput("ex_porcento")))
                                                                                          )
                                                                                      )),
                                                                             
@@ -781,7 +759,7 @@ ui <- dashboardPage(
                                                                                                     style="text-align:justify;color:#404040;background-color:#FAFAD2;padding:20px;border-radius:15px"),
                                                                                              
                                                                                              column(6,
-                                                                                                    highchartOutput('ex_barra_linha'))
+                                                                                                    loader(highchartOutput('ex_barra_linha')))
                                                                                          )
                                                                                      )),
                                                                             
@@ -799,7 +777,7 @@ ui <- dashboardPage(
                                                                                             o passar dos anos e que os valores assumidos pelos 3 grupos foram bem próximos no ano de 2017."),
                                                                                                     style="text-align:justify;color:#404040;background-color:#FAFAD2;padding:20px;border-radius:15px"),
                                                                                              
-                                                                                             column(6,highchartOutput("ex_linha"))
+                                                                                             column(6,loader(highchartOutput("ex_linha")))
                                                                                          )
                                                                                      )),
                                                                             
@@ -817,7 +795,7 @@ ui <- dashboardPage(
                                                                                           B, C, D e E nas variáveis var1 e var2."),
                                                                                                     style="text-align:justify;color:#404040;background-color:#FAFAD2;padding:20px;border-radius:15px"),
                                                                                              
-                                                                                             column(6,highchartOutput("expolar"))
+                                                                                             column(6,loader(highchartOutput("expolar")))
                                                                                          )
                                                                                      )
                                                                             ),
@@ -835,7 +813,7 @@ ui <- dashboardPage(
                                                                                                     p("No exemplo, os elementos do grupo A, de frequência absoluta 15, representam 50% do total dos elementos."),
                                                                                                     style="text-align:justify;color:#404040;background-color:#FAFAD2;padding:20px;border-radius:15px"),
                                                                                              
-                                                                                             column(6,highchartOutput("ex_setor"))
+                                                                                             column(6,loader(highchartOutput("ex_setor")))
                                                                                          )
                                                                                      )
                                                                             ),
@@ -857,7 +835,7 @@ ui <- dashboardPage(
                                                                                                e menores ou iguais a 20."),
                                                                                                     style="text-align:justify;color:#404040;background-color:#FAFAD2;padding:20px;border-radius:15px"),
                                                                                              
-                                                                                             column(6,plotlyOutput("exhist"))
+                                                                                             column(6,loader(plotlyOutput("exhist")))
                                                                                          )
                                                                                      )
                                                                             ),
@@ -880,7 +858,7 @@ ui <- dashboardPage(
                                                                                           dos grupos, como no grupo B em o elemento 7 supera o 3."),
                                                                                                     style="text-align:justify;color:#404040;background-color:#FAFAD2;padding:20px;border-radius:15px"),
                                                                                              
-                                                                                             column(6,highchartOutput("extree"))
+                                                                                             column(6,loader(highchartOutput("extree")))
                                                                                          )
                                                                                      )
                                                                             )
@@ -1789,17 +1767,18 @@ server <- function(input, output) {
         
     })
 
+    # labels gráficos de barras empilhado
+    labels_faixas <- c("5 a 9 anos",
+                       "10 a 14 anos","15 a 19 anos","20 a 24 anos","25 a 29 anos",
+                       "30 a 34 anos","35 a 39 anos","40 a 44 anos","45 a 49 anos",
+                       "50 a 54 anos","55 a 59 anos","60 a 64 anos","65 a 69 anos",
+                       "70 a 74 anos","75 a 79 anos","80 a 84 anos","85 a 89 anos",
+                       "90 a 94 anos","95 a 100 anos")
+    labels_racas <- c("Não declarado","Branca","Preta","Parda",
+                      "Amarela","Indígena","Não dispõe da informação")
+    
     # output gráfico de barras empilhado 1 ====
     output$barra_porcento <- renderHighchart({
-        
-        labels_faixas <- c("5 a 9 anos",
-                           "10 a 14 anos","15 a 19 anos","20 a 24 anos","25 a 29 anos",
-                           "30 a 34 anos","35 a 39 anos","40 a 44 anos","45 a 49 anos",
-                           "50 a 54 anos","55 a 59 anos","60 a 64 anos","65 a 69 anos",
-                           "70 a 74 anos","75 a 79 anos","80 a 84 anos","85 a 89 anos",
-                           "90 a 94 anos","95 a 100 anos")
-        labels_racas <- c("Não declarado","Branca","Preta","Parda",
-                          "Amarela","Indígena","Não dispõe da informação")
         
         dados <- fread("dados_barra.csv")
         dados$raca <- as.factor(dados$raca)
@@ -1828,7 +1807,7 @@ server <- function(input, output) {
                                  }"),useHTML = FALSE)
     })
     
-    # output gráfico de barras empilhado 2 ====
+    # output gráfico de barras empilhado 2 ==== 
     output$barra_porcento_2 <- renderHighchart({
         
         dados <- fread("dados_barra.csv")
